@@ -11,7 +11,9 @@ use warnings;
 use Getopt::Long;
 use Pod::Usage;
 use FindBin;
-use lib "$FindBin::Bin/../lib";
+BEGIN { do "$FindBin::Bin/env" or die $@ }
+do "$FindBin::Bin/env";
+
 
 my $debug             = 0;
 my $fork              = 0;

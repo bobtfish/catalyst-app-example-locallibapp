@@ -1,0 +1,8 @@
+#!/bin/sh
+
+TARGET="../local-lib2" # Needs to be the same as in ./env
+
+perl -MCPAN -Mlocal::lib=--self-contained,$TARGET -e'force(qw/install local::lib/)'
+
+export PERL5LIB=
+perl -MCPAN -Mlocal::lib=--self-contained,$TARGET -e'force(qw/install local::lib/)'

@@ -1,0 +1,11 @@
+#!/usr/bin/env perl 
+
+use strict;
+use warnings;
+
+use FindBin;
+BEGIN { do "$FindBin::Bin/env" or die $@ }
+
+$ENV{PERL_AUTOINSTALL_PREFER_CPAN}=1;
+
+exec '/usr/bin/env', 'make', 'installdeps';

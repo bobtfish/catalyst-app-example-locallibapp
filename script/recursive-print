@@ -1,0 +1,17 @@
+#!/usr/bin/env perl 
+
+use strict;
+use warnings;
+
+use FindBin;
+BEGIN { do "$FindBin::Bin/env" or die $@ }
+
+$ENV{COUNTer} ||= 0;
+
+warn join "\n", $ENV{COUNTer}++, @INC, '';
+
+warn "$ENV{PERL5LIB}\n";
+
+sleep 3;
+
+exec $0

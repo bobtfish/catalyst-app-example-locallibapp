@@ -15,6 +15,6 @@ requires 'Config::General'; # This should reflect the config file format you've 
                  # See Catalyst::Plugin::ConfigLoader for supported formats
 catalyst;
 
-install_script glob('script/*.pl');
+#install_script glob('script/*.pl');
 auto_install;
 WriteAll;
