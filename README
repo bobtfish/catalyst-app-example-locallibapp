@@ -16,6 +16,12 @@ All in all, it works pretty well, and most of CPAN is well behaved
 
 Procedure:
 
+    # To bootstrap local::lib
+    cd patched-local-lib
+    /path/to/locallibapp/script/cpan -i .
+
+    # To install Catalyst
+    cd locallibapp
     ./script/cpan -i -f Test::Simple
     ./script/cpan -i -f Mouse
     ./script/cpan -i Module::Install
