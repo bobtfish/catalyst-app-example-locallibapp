@@ -14,6 +14,16 @@ All in all, it works pretty well, and most of CPAN is well behaved
 * ExtUtils::MakeMaker fails a ton of tests (but this is just ignored?), won't install
 * Mouse has a failing test, won't install
 
+How to make a self-contained script:
+
+< use FindBin;
+< use lib "$FindBin::Bin/../lib";
+
+> use FindBin;
+> BEGIN { do "$FindBin::Bin/env" or die $@ }
+
+Maybe env should be called "local-lib-env" or "lib-env"?
+
 Procedure:
 
     # To bootstrap local::lib
