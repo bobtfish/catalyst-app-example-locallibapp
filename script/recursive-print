@@ -14,4 +14,4 @@ warn "$ENV{PERL5LIB}\n";
 
 sleep 3;
 
-exec $0
+exec 'make', '-f', 'recursive-print.Makefile';

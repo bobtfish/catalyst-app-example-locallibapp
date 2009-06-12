@@ -5,10 +5,9 @@ use strict;
 use warnings;
 
 use FindBin;
-use local::lib();
 
 my $self_contained = 1;
-my $target = '../local-lib2'; # The target directory... this is what local::lib will be anchored to
+my $target = '../local-lib5'; # The target directory... this is what local::lib will be anchored to
 my @include = qw{ ../lib }; # Check for a .pm here as well
 
 m/^\// or $_ = "$FindBin::Bin/$_" for $target, @include;
@@ -21,18 +20,9 @@ my $perl5opt = '-Mlocal::lib=' . join ',', @perl5opt;
 
 $ENV{PERL5OPT} = $perl5opt;
 $ENV{PERL5LIB} = join ':', @include;
-local::lib->setup_env_hash_for( $target );
 
-# TODO I think we might want to give '../lib' precedence, but this isn't happening
-
-if ( $self_contained ) { # We have to do this here, since local::lib only has this functionality in import
-    require Config;
-    @INC = ( split( ':', $ENV{PERL5LIB} ), $Config::Config{privlibexp}, $Config::Config{archlibexp} );
-}
-else {
-}
-
-m/(.*)/ and $_ = $1 for @INC;
+require local::lib;
+local::lib->import( '--self-contained', $target );
 
 unless ( caller ) {
     if ( @ARGV ) {
