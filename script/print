@@ -1,0 +1,9 @@
+#!/usr/bin/env perl 
+
+use strict;
+use warnings;
+
+use FindBin;
+BEGIN { do "$FindBin::Bin/env" or die $@ }
+
+die join "\n", @INC, '';

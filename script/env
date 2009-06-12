@@ -1,0 +1,33 @@
+#!/usr/bin/env perl
+# vim: set filetype=perl:
+
+use strict;
+use warnings;
+
+use FindBin;
+
+my $self_contained = 1;
+my $target = '../local-lib5'; # The target directory... this is what local::lib will be anchored to
+my @include = qw{ ../lib }; # Check for a .pm here as well
+
+m/^\// or $_ = "$FindBin::Bin/$_" for $target, @include;
+push @include, qw{ . }; # Need '.' for CPAN to work(?)
+
+my @perl5opt;
+push @perl5opt, '--self-contained' if $self_contained;
+push @perl5opt, $target;
+my $perl5opt = '-Mlocal::lib=' . join ',', @perl5opt;
+
+$ENV{PERL5OPT} = $perl5opt;
+$ENV{PERL5LIB} = join ':', @include;
+
+require local::lib;
+local::lib->import( '--self-contained', $target );
+
+unless ( caller ) {
+    if ( @ARGV ) {
+        exec @ARGV;
+    }
+}
+
+1;

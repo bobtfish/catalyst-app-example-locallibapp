@@ -2,6 +2,8 @@
 
 use strict;
 use warnings;
+use FindBin;
+BEGIN { do "$FindBin::Bin/env" or die $@ }
 use Getopt::Long;
 use Pod::Usage;
 eval "use Catalyst::Helper;";
