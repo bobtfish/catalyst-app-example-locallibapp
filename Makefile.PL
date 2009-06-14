@@ -5,7 +5,6 @@ use FindBin;
 BEGIN {
     if (-d 'local-lib5') {
         do "$FindBin::Bin/script/env" or die $@;
-        delete $ENV{PERL5OPT};
     }
 }
 use inc::Module::Install;

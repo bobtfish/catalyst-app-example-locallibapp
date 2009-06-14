@@ -20,13 +20,14 @@ push @include, qw{ . }; # Need '.' for CPAN to work(?)
 
 $target = undef unless -d $target;
 
-my @perl5opt;
-push @perl5opt, '--self-contained' if $self_contained;
-push @perl5opt, $target;
-my $perl5opt = '-Mlocal::lib=' . join ',', @perl5opt;
+#my @perl5opt;
+#push @perl5opt, '--self-contained' if $self_contained;
+#push @perl5opt, $target;
+#my $perl5opt = '-Mlocal::lib=' . join ',', @perl5opt;
 
 if ($target) {
-    $ENV{PERL5OPT} = $perl5opt;
+# This breaks script/make, I don't know why it was needed in the first place.
+#    $ENV{PERL5OPT} = $perl5opt;
     $ENV{PERL5LIB} = join ':', @include;
 
     require local::lib;
