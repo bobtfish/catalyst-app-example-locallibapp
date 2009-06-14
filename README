@@ -6,7 +6,9 @@ Unfortunately, stock local::lib doesn't seem to work right! So I had to make som
     2. Untaint @INC, so perl programs that do taint checking (-T) don't compain
     3. Only re-export the $PER5LIB we started with, so @INC doesn't grow and grow and grow (use ./recursive-print to see this)
 
-The patch is in local-lib.diff (script/local-lib.diff)
+The patch is in local-lib trunk, at: 
+
+http://dev.catalyst.perl.org/repos/bast/local-lib/1.000/trunk/
 
 All in all, it works pretty well, and most of CPAN is well behaved
 
@@ -27,7 +29,8 @@ Maybe env should be called "local-lib-env" or "lib-env"?
 Procedure:
 
     # To bootstrap local::lib
-    cd patched-local-lib
+    svn co http://dev.catalyst.perl.org/repos/bast/local-lib/1.000/trunk/ local-lib
+    cd local-lib
     /path/to/locallibapp/script/cpan -i .
 
     # To install Catalyst
@@ -37,3 +40,4 @@ Procedure:
     ./script/cpan -i Module::Install
     ./script/make-installdeps
     ./script/catalyst-server
+
