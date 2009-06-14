@@ -17,9 +17,13 @@ Procedure:
     
     # To bootstrap local::lib
     ./script/bootstrap
-    # To install Catalyst
+    # You're in author mode, so you need Module::Install:
     ./script/cpan -i Module::Install
-    ./script/make-installdeps
+    # Re-run your Makefile.PL to generate an appropriate Makefile
+    ./script/perl Makefile.PL
+    # To install Catalyst
+    ./script/make installdeps
+    # And go!
     ./script/catalyst-server
 
 How to make a self-contained script:
