@@ -1,6 +1,13 @@
 #!/usr/bin/env perl
 # IMPORTANT: if you delete this file your app will not work as
 # expected.  You have been warned.
+use FindBin;
+BEGIN {
+    if (-d 'local-lib5') {
+        do "$FindBin::Bin/script/env" or die $@;
+        delete $ENV{PERL5OPT};
+    }
+}
 use inc::Module::Install;
 
 name 'LocalLibApp';
