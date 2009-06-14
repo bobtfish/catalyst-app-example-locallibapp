@@ -1,8 +1,19 @@
 #!/bin/sh
 
-TARGET="../local-lib2" # Needs to be the same as in ./env
+# This script installs an initial local::lib into your application directory
+# named local-lib5.
 
-perl -MCPAN -Mlocal::lib=--self-contained,$TARGET -e'force(qw/install local::lib/)'
+# Needs to be run as script/bootstrap
+# FIXME - check that here..
 
+rm -rf local-lib-svn
+/usr/bin/env svn export http://dev.catalyst.perl.org/repos/bast/local-lib/1.000/trunk/ local-lib-svn
+cd local-lib-svn
+perl Makefile.PL
+rm -rf inc/.author
 export PERL5LIB=
-perl -MCPAN -Mlocal::lib=--self-contained,$TARGET -e'force(qw/install local::lib/)'
+perl Makefile.PL --bootstrap=../local-lib5
+make install
+cd ..
+rm -rf local-lib-svn
+
