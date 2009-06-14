@@ -10,11 +10,26 @@ The patch is in local-lib trunk, at:
 
 http://dev.catalyst.perl.org/repos/bast/local-lib/1.000/trunk/
 
-All in all, it works pretty well, and most of CPAN is well behaved
+All in all, it works pretty well, and most of CPAN is well behaved except:
 
-* Test::Simple (t/exit.t) is a problem, because it uses a custom perl invocation (that munges with @INC), won't install
-* ExtUtils::MakeMaker fails a ton of tests (but this is just ignored?), won't install
+* Test::Simple (t/exit.t) is a problem, because it uses a custom perl invocatio
 * Mouse has a failing test, won't install
+* ExtUtils::MakeMaker fails a ton of tests but local::lib's bootstrap
+  force installs it if needed
+
+Procedure:
+
+    git clone git://github.com/bobtfish/catalyst-app-example-locallibapp.git
+    cd catalyst-app-example-locallibapp
+    
+    # To bootstrap local::lib
+    ./script/bootstrap
+    # To install Catalyst
+    ./script/cpan -i -f Test::Simple
+    ./script/cpan -i -f Mouse
+    ./script/cpan -i Module::Install
+    ./script/make-installdeps
+    ./script/catalyst-server
 
 How to make a self-contained script:
 
@@ -26,18 +41,4 @@ How to make a self-contained script:
 
 Maybe env should be called "local-lib-env" or "lib-env"?
 
-Procedure:
-
-    # To bootstrap local::lib
-    svn co http://dev.catalyst.perl.org/repos/bast/local-lib/1.000/trunk/ local-lib
-    cd local-lib
-    /path/to/locallibapp/script/cpan -i .
-
-    # To install Catalyst
-    cd locallibapp
-    ./script/cpan -i -f Test::Simple
-    ./script/cpan -i -f Mouse
-    ./script/cpan -i Module::Install
-    ./script/make-installdeps
-    ./script/catalyst-server
 
