@@ -4,6 +4,9 @@ use strict;
 use warnings;
 
 use FindBin;
-BEGIN { do "$FindBin::Bin/env" or die $@ }
+BEGIN {
+    do "$FindBin::Bin/env" or die $@;
+    delete $ENV{PERL5OPT};
+}
 
 exec 'perl', '-MCPAN', '-eshell';
