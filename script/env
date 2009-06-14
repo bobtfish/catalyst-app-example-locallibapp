@@ -7,22 +7,31 @@ use warnings;
 use FindBin;
 
 my $self_contained = 1;
-my $target = '../local-lib5'; # The target directory... this is what local::lib will be anchored to
-my @include = qw{ ../lib }; # Check for a .pm here as well
+my $dir =   -r 'Makefile.PL'       ? ''
+            : -r '../Makefile.PL'  ? '../'
+            : die("Cannot find Makefile.PL");
+
+# The target directory... this is what local::lib will be anchored to
+my $target = "${dir}local-lib5";
+my @include = "${dir}lib"; # Check for a .pm here as well
 
 m/^\// or $_ = "$FindBin::Bin/$_" for $target, @include;
 push @include, qw{ . }; # Need '.' for CPAN to work(?)
+
+$target = undef unless -d $target;
 
 my @perl5opt;
 push @perl5opt, '--self-contained' if $self_contained;
 push @perl5opt, $target;
 my $perl5opt = '-Mlocal::lib=' . join ',', @perl5opt;
 
-$ENV{PERL5OPT} = $perl5opt;
-$ENV{PERL5LIB} = join ':', @include;
+if ($target) {
+    $ENV{PERL5OPT} = $perl5opt;
+    $ENV{PERL5LIB} = join ':', @include;
 
-require local::lib;
-local::lib->import( '--self-contained', $target );
+    require local::lib;
+    local::lib->import( '--self-contained', $target );
+}
 
 unless ( caller ) {
     if ( @ARGV ) {
@@ -31,3 +40,4 @@ unless ( caller ) {
 }
 
 1;
+
