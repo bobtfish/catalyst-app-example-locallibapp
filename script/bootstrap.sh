@@ -6,7 +6,7 @@
 # Needs to be run as script/bootstrap
 # FIXME - check that here..
 
-rm -rf local-lib-svn
+rm -rf local-lib5 local-lib-svn
 /usr/bin/env svn export http://dev.catalyst.perl.org/repos/bast/local-lib/1.000/trunk/ local-lib-svn
 cd local-lib-svn
 perl Makefile.PL
@@ -16,4 +16,7 @@ perl Makefile.PL --bootstrap=../local-lib5
 make install
 cd ..
 rm -rf local-lib-svn
+script/cpan-install.pl Module::Install
+perl Makefile.Pl
+make installdeps
 

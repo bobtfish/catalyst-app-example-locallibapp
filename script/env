@@ -1,7 +1,35 @@
-#!/bin/bash
+#!/usr/bin/env perl
+# vim: set filetype=perl:
 
-export PERL5LIB=
-eval $(perl -Ilocal-lib5/lib/perl5 -Mlocal::lib=local-lib5)
+use strict;
+use warnings;
 
-exec $*
+use FindBin qw($Bin);
+
+my $basedir;
+if (-r "$Bin/Makefile.PL") {
+    $basedir = $Bin;
+}
+elsif (-r "$Bin/../Makefile.PL") {
+    $basedir = "$Bin/..";
+}
+else {
+    die;
+}
+
+my $target = "$basedir/local-lib5"; 
+my @include = ('.', "$basedir/lib");
+
+$ENV{PERL5LIB} = join ':', @include;
+
+require local::lib;
+local::lib->import( '--self-contained', $target );
+
+unless ( caller ) {
+    if ( @ARGV ) {
+        exec @ARGV;
+    }
+}
+
+1;
 

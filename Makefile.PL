@@ -3,19 +3,8 @@
 # expected.  You have been warned.
 use inc::Module::Install;
 
-use FindBin qw/$Bin/;
-{
-    my $local_lib = "$Bin/local-lib5";
-    my $have_local_lib = -d $local_lib; 
-    delete $ENV{PERL5LIB};
-    require local::lib;
-    local::lib->import( '--self-contained', $local_lib );
-
-#    sub MY::preinstall {
-#        warn("Pre install for " . shift);
-#        return 1;
-#    }
-}
+use FindBin;
+BEGIN { do "$FindBin::Bin/script/env" or die $@ }
 
 name 'LocalLibApp';
 all_from 'lib/LocalLibApp.pm';
