@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export PERL5LIB=
+eval $(perl -Ilocal-lib5/lib/perl5 -Mlocal::lib=local-lib5)
+
+exec $*
+
