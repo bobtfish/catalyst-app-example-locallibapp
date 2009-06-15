@@ -16,7 +16,15 @@ perl Makefile.PL --bootstrap=../local-lib5
 make install
 cd ..
 rm -rf local-lib-svn
-script/cpan-install.pl Module::Install
-perl Makefile.Pl
-make installdeps
+
+echo " *** FINISHED BUILDING local::lib "
+
+#echo " *** Installing Module::Install "
+
+#script/cpan-install.pl Module::Install
+
+#echo " *** Finished installing Module::Install"
+
+#perl Makefile.Pl
+#make installdeps
 
