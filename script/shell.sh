@@ -1,5 +1,5 @@
 #!/bin/bash
 
-script/env
+source script/env
 exec /bin/bash
 
