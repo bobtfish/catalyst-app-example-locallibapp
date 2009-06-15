@@ -1,1 +1,59 @@
-Run script/locallibapp_server.pl to test the application.
+So... this is an implementation of Catalyst's scripts that use local::lib
+
+Unfortunately, stock local::lib doesn't seem to work right! So I had to make some small patches.
+
+    1. Favor $PERL5LIB over priv/archexplib
+    2. Untaint @INC, so perl programs that do taint checking (-T) don't compain
+    3. Only re-export the $PER5LIB we started with, so @INC doesn't grow and grow and grow (use ./recursive-print to see this)
+
+The patch is in local-lib trunk, at: 
+
+http://dev.catalyst.perl.org/repos/bast/local-lib/1.000/trunk/
+
+Procedure:
+
+    git clone git://github.com/bobtfish/catalyst-app-example-locallibapp.git
+    cd catalyst-app-example-locallibapp
+    
+    # To bootstrap local::lib
+    ./script/bootstrap.sh
+    # You're in author mode, so you need Module::Install:
+    ./script/cpan-install.sh Module::Install
+    # Re-run your Makefile.PL to generate an appropriate Makefile
+    perl Makefile.PL
+    # To install Catalyst
+    script/make installdeps
+    # And go!
+    ./script/catalyst-server
+
+Scripts available:
+
+env - the core script, does all the magic.
+bootstrap - create initial local_lib5 directory and enable local::lib mode
+
+bash - a bash shell with this app's local::lib setup
+perl - run perl with this app's local::lib setup
+make - run make with this app's local::lib setup
+
+cpan - same as the cpan script
+cpanp - same as the cpanp script
+cpan-shell - perl -MCPAN -eshell
+
+catalyst-fastcgi - standard catalyst generated scripts, but changed to use
+                   local::lib
+catalyst-server
+catalyst-test
+catalyst-cgi
+catalyst-create
+
+How to make a self-contained script:
+
+< use FindBin;
+< use lib "$FindBin::Bin/../lib";
+
+> use FindBin;
+> BEGIN { do "$FindBin::Bin/env" or die $@ }
+
+Maybe env should be called "local-lib-env" or "lib-env"?
+
+
