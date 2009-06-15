@@ -3,6 +3,16 @@
 # expected.  You have been warned.
 use inc::Module::Install;
 
+use FindBin qw/$Bin/;
+{
+    my $have_local_lib = -d "$Bin/local-lib5";
+
+    sub MY::preinstall {
+        warn("Pre install for " . shift);
+        return 1;
+    }
+}
+
 name 'LocalLibApp';
 all_from 'lib/LocalLibApp.pm';
 
