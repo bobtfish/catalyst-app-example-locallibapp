@@ -5,12 +5,16 @@ use inc::Module::Install;
 
 use FindBin qw/$Bin/;
 {
-    my $have_local_lib = -d "$Bin/local-lib5";
+    my $local_lib = "$Bin/local-lib5";
+    my $have_local_lib = -d $local_lib; 
+    delete $ENV{PERL5LIB};
+    require local::lib;
+    local::lib->import( '--self-contained', $local_lib );
 
-    sub MY::preinstall {
-        warn("Pre install for " . shift);
-        return 1;
-    }
+#    sub MY::preinstall {
+#        warn("Pre install for " . shift);
+#        return 1;
+#    }
 }
 
 name 'LocalLibApp';
