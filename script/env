@@ -6,33 +6,34 @@ use warnings;
 
 use FindBin;
 
-my $self_contained = 1;
-my $dir =   -r 'Makefile.PL'       ? ''
-            : -r '../Makefile.PL'  ? '../'
-            : die("Cannot find Makefile.PL");
+if (!$ENV{IN_CATALYST_LOCAL_LIB}) {
+    my $dir;
+    if ( -r "$FindBin::Bin/Makefile.PL" ) {
+        $dir = '';
+    }
+    elsif (-r "$FindBin::Bin/../Makefile.PL") {
+        $dir = '../';
+    }
+    else {
+        die("Cannot find Makefile.PL");
+    }
 
-# The target directory... this is what local::lib will be anchored to
-my $target = "${dir}local-lib5";
-my @include = "${dir}lib"; # Check for a .pm here as well
+    # The target directory... this is what local::lib will be anchored to
+    my $target = "${dir}local-lib5";
+    my @include = "${dir}lib"; # Check for a .pm here as well
 
-m/^\// or $_ = "$FindBin::Bin/$_" for $target, @include;
-push @include, qw{ . }; # Need '.' for CPAN to work(?)
+    $ENV{IN_CATALYST_LOCAL_LIB} = "${dir}/script/perl";
 
-$target = undef unless -d $target;
+    m/^\// or $_ = "$FindBin::Bin/$_" for $target, @include;
+    push @include, qw{ . }; # Need '.' for CPAN to work(?)
 
-#my @perl5opt;
-#push @perl5opt, '--self-contained' if $self_contained;
-#push @perl5opt, $target;
-#my $perl5opt = '-Mlocal::lib=' . join ',', @perl5opt;
-
-if ($target) {
-# This breaks script/make, I don't know why it was needed in the first place.
-#    $ENV{PERL5OPT} = $perl5opt;
-    $ENV{PERL5LIB} = join ':', @include;
+    $ENV{PERL5LIB} = join ':', $target, @include;
 
     require local::lib;
     local::lib->import( '--self-contained', $target );
 }
+
+$^X = $ENV{IN_CATALYST_LOCAL_LIB};
 
 unless ( caller ) {
     if ( @ARGV ) {

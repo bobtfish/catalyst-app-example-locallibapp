@@ -5,5 +5,5 @@ use warnings;
 
 use FindBin;
 BEGIN { do "$FindBin::Bin/env" or die $@ }
-
+warn $ENV{PERL5LIB};
 exec 'bash', @ARGV;
