@@ -28,6 +28,10 @@ echo " *** FINISHED BUILDING local::lib "
 
 echo " *** Installing Module::Install "
 
+script/cpan-install.pl CPAN
+# Needed if you have old old CPAN, fixed in more recent local::lib
+# (>=1.004003)
+
 script/cpan-install.pl Module::Install
 
 echo " *** Finished installing Module::Install"
