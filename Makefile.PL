@@ -9,7 +9,7 @@ BEGIN { do "$FindBin::Bin/script/env" or die $@ }
 name 'LocalLibApp';
 all_from 'lib/LocalLibApp.pm';
 
-requires 'local::lib' => '1.004001';
+requires 'local::lib' => '1.004002';
 requires 'Catalyst::Runtime' => '5.80005';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::Static::Simple';
