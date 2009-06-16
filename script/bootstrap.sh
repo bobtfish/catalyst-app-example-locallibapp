@@ -1,21 +1,22 @@
 #!/bin/sh
 
 # This script installs an initial local::lib into your application directory
-# named local-lib5.
+# named local-lib5, which automatically turns on local::lib support by default.
 
-# Needs to be run as script/bootstrap
-# FIXME - check that here..
+# Needs to be run as script/bootstrap.sh
 
-rm -rf local-lib5 local-lib-svn
-/usr/bin/env svn export http://dev.catalyst.perl.org/repos/bast/local-lib/1.000/trunk/ local-lib-svn
-cd local-lib-svn
-perl Makefile.PL
-rm -rf inc/.author
+# Will then install Module::Install, and all of your dependencies into
+# the local lib directory created.
+
+# FIXME - check that we have been run as script/bootstrap.sh here..
+
+rm -rf local-lib5
+
 export PERL5LIB=
-perl Makefile.PL --bootstrap=../local-lib5
-make install
-cd ..
-rm -rf local-lib-svn
+export PERL_MM_OPT="INSTALL_BASE=local-lib5"
+export PERL_MM_USE_DEFAULT="1"
+
+perl -MCPAN -e'install(qw/local::lib/)'
 
 echo " *** FINISHED BUILDING local::lib "
 
