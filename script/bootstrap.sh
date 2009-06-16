@@ -19,12 +19,12 @@ rm -rf local-lib-svn
 
 echo " *** FINISHED BUILDING local::lib "
 
-#echo " *** Installing Module::Install "
+echo " *** Installing Module::Install "
 
-#script/cpan-install.pl Module::Install
+script/cpan-install.pl Module::Install
 
-#echo " *** Finished installing Module::Install"
+echo " *** Finished installing Module::Install"
 
-#perl Makefile.Pl
-#make installdeps
+perl Makefile.PL
+make installdeps
 
