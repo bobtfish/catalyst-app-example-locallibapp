@@ -61,6 +61,8 @@ if ( $on ) {
     # Sorry kane ;)
     $ENV{PERL_AUTOINSTALL_PREFER_CPAN}=1;
 
+    $ENV{PERL_MM_OPT} .= " INSTALLMAN1DIR=none INSTALLMAN3DIR=none";
+
     require local::lib;
     local::lib->import( '--self-contained', $target );
 }
