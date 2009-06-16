@@ -20,32 +20,28 @@ Procedure:
     # And go!
     ./script/catalyst-server
 
-Scripts available:
+Additional scripts available:
 
-env - the core script, does all the magic.
-bootstrap.sh - create initial local_lib5 directory and enable local::lib mode
+  env - the core script, does all the magic.
+  bootstrap.sh - create initial local_lib5 directory and enable local::lib mode
 
-shell.sh - a bash shell with this app's local::lib setup
-perl.pl - run perl with this app's local::lib setup
+  shell.sh - a bash shell with this app's local::lib setup
+  perl.pl - run perl with this app's local::lib setup
 
-cpan-install.pl
-cpanp - FIXME
-cpan-shell - perl -MCPAN -eshell
+  cpan-install.pl
+  cpanp - FIXME
+  cpan-shell - perl -MCPAN -eshell
 
-catalyst-fastcgi - standard catalyst generated scripts, but changed to use
-                   local::lib
-catalyst-server
-catalyst-test
-catalyst-cgi
-catalyst-create
+Note about self contained mode:
 
-How to make a self-contained script:
+  We try to do everything in local::libs --self-contained mode
+  so that everything which is a non-core dependency is bundled for you,
+  and you will only see the core module and the contents of your local::lib
 
-< use FindBin;
-< use lib "$FindBin::Bin/../lib";
+  However, only perl scripts directly under our controll can be forced into
+  this mode.
 
-> use FindBin;
-> BEGIN { do "$FindBin::Bin/env" or die $@ }
-
-
+  The correct way to install dependencies in a local::lib based application
+  is to add them to your Makefile.PL, then make installdeps - this will
+  ensure that any non-core dependencies needed
 

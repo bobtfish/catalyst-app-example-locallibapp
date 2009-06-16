@@ -11,12 +11,18 @@
 # FIXME - check that we have been run as script/bootstrap.sh here..
 
 rm -rf local-lib5
-
-export PERL5LIB=
-export PERL_MM_OPT="INSTALL_BASE=local-lib5"
+PWD=`pwd`
+TARGET="$PWD/local-lib5"
+LIB="$TARGET/lib/perl5"
+export PERL_MM_OPT="INSTALL_BASE=$TARGET"
 export PERL_MM_USE_DEFAULT="1"
 
-perl -MCPAN -e'install(qw/local::lib/)'
+# Install local::lib, force so we do it even if we have it already
+perl -MCPAN -e'force(qw/install local::lib/)'
+
+# Then force install it --self-contained to get dependencies
+export PERL5LIB=
+perl -I $LIB -Mlocal::lib=--self-contained,$TARGET -MCPAN -e'force(qw/install local::lib/)'
 
 echo " *** FINISHED BUILDING local::lib "
 
