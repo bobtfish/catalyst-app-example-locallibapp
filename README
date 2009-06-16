@@ -47,6 +47,5 @@ How to make a self-contained script:
 > use FindBin;
 > BEGIN { do "$FindBin::Bin/env" or die $@ }
 
-Maybe env should be called "local-lib-env" or "lib-env"?
 
 
