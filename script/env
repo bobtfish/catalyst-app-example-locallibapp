@@ -58,6 +58,9 @@ if ( $on ) {
 
     $ENV{PERL5LIB} = join ':', @include;
 
+    # Sorry kane ;)
+    $ENV{PERL_AUTOINSTALL_PREFER_CPAN}=1;
+
     require local::lib;
     local::lib->import( '--self-contained', $target );
 }
