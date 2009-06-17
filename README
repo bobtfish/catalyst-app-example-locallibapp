@@ -15,22 +15,26 @@ Procedure:
     git clone git://github.com/bobtfish/catalyst-app-example-locallibapp.git
     cd catalyst-app-example-locallibapp
     
-    # To bootstrap local::lib
+    # To bootstrap local::lib, runs your Makefile.PL, runs make installdeps
     ./script/bootstrap.sh
     # And go!
-    ./script/catalyst-server
+    ./script/catalyst-server.pl
 
 Additional scripts available:
 
-  env - the core script, does all the magic.
-  bootstrap.sh - create initial local_lib5 directory and enable local::lib mode
+bootstrap.sh            installdeps.sh          locallibapp_server.pl
+cpan-install.pl         locallibapp_cgi.pl      locallibapp_test.pl
+cpan-shell.sh           locallibapp_create.pl   shell.sh
+env                     locallibapp_fastcgi.pl
 
-  shell.sh - a bash shell with this app's local::lib setup
+  env - The core script, does all the magic.
+  bootstrap.sh - create initial local-lib5 directory
+
+  shell.sh - a bash shell with this app's local::lib setup _NOT SELF CONTAINED_
   perl.pl - run perl with this app's local::lib setup
 
-  cpan-install.pl
-  cpanp - FIXME
-  cpan-shell - perl -MCPAN -eshell
+  cpan-install.pl - Install a specific module from CPAN
+  cpan-shell.sh - perl -MCPAN -eshell
 
 Note about self contained mode:
 
@@ -38,10 +42,23 @@ Note about self contained mode:
   so that everything which is a non-core dependency is bundled for you,
   and you will only see the core module and the contents of your local::lib
 
-  However, only perl scripts directly under our controll can be forced into
+  However, only perl scripts directly under our control can be forced into
   this mode.
 
   The correct way to install dependencies in a local::lib based application
   is to add them to your Makefile.PL, then make installdeps - this will
-  ensure that any non-core dependencies needed
+  ensure that any non-core dependencies needed are installed with their
+  dependencies in a correctly self contained manor.
+
+  If you install dependencies using shell.sh, then you can get into trouble
+  if your local system perl already has some of the dependencies, then these
+  will not be bundled with your application as expected.
+
+Disabling local::lib mode:
+
+  You can totally disable local::lib mode just by deleting the generated
+  local-lib5 directory.
+
+  It is possible do totally disable local::lib on a temporary basis by setting
+  the CATALYST_LOCAL_LIB environment variable to 0
 
