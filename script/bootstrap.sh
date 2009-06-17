@@ -10,7 +10,12 @@
 
 # FIXME - check that we have been run as script/bootstrap.sh here..
 
+# Remove pre-existing lib
 rm -rf local-lib5
+
+# Do not take no for an answer.
+export CATALYST_LOCAL_LIB=1
+
 PWD=`pwd`
 TARGET="$PWD/local-lib5"
 LIB="$TARGET/lib/perl5"
@@ -24,17 +29,24 @@ perl -MCPAN -e'force(qw/install local::lib/)'
 export PERL5LIB=
 perl -I $LIB -Mlocal::lib=--self-contained,$TARGET -MCPAN -e'force(qw/install local::lib/)'
 
-echo " *** FINISHED BUILDING local::lib "
-
-echo " *** Installing Module::Install "
-
+script/cpan-install.pl Module::Install
 script/cpan-install.pl CPAN
 # Needed if you have old old CPAN, fixed in more recent local::lib
 # (>=1.004003)
 
-script/cpan-install.pl Module::Install
-
-echo " *** Finished installing Module::Install"
+# Mangle WWW::Mechanize with distroprefs, I'm sick of it failing.
+perl -MCPAN -MCPAN::HandleConfig -e'CPAN::HandleConfig->load();
+    mkdir $CPAN::Config->{prefs_dir} unless -d $CPAN::Config->{prefs_dir};
+    open(PREFS, ">", File::Spec->catfile($CPAN::Config->{prefs_dir},
+        "catalyst_local-lib-disable-mech-live.yml")) or die; 
+    print PREFS qq{---
+comment: "WWW-Mechanize regularly fails its live tests, turn them off."
+match:
+  distribution: "^PETDANCE/WWW-Mechanize-1.\\d+\\.tar\\.gz"
+patches:
+  - "BOBTFISH/WWW-Mechanize-1.XX-BOBTFISH-01_notests.patch.gz"
+};
+    close(PREFS);'
 
 perl Makefile.PL
 make installdeps
