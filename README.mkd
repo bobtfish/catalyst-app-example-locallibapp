@@ -12,6 +12,11 @@
     # And go!
     ./script/catalyst-server.pl
 
+# Edited scripts
+
+Makefile.PL, and script/myapp_server.pl hav been edited as documented in
+script/env to enable local::lib mode
+
 # Additional scripts available:
 
   * env - The core script, does all the magic.

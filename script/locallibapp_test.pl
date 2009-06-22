@@ -1,5 +1,8 @@
 #!/usr/bin/env perl
 
+use FindBin;
+BEGIN { do "$FindBin::Bin/env" or die $@ }
+
 use strict;
 use warnings;
 use Getopt::Long;

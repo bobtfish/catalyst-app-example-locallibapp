@@ -2,6 +2,9 @@
 
 BEGIN { $ENV{CATALYST_ENGINE} ||= 'FastCGI' }
 
+use FindBin;
+BEGIN { do "$FindBin::Bin/env" or die $@ }
+
 use strict;
 use warnings;
 use Getopt::Long;
