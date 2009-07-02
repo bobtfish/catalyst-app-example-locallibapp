@@ -56,10 +56,12 @@ fi
 # (>=1.004003)
 
 # Mangle WWW::Mechanize with distroprefs, I'm sick of it failing.
-perl -MCPAN -MCPAN::HandleConfig -e'CPAN::HandleConfig->load();
+perl -I $LIB -Mlocal::lib=--self-contained,$TARGET -MCPAN -MCPAN::HandleConfig -e'
+    
+    CPAN::HandleConfig->load();
     mkdir $CPAN::Config->{prefs_dir} unless -d $CPAN::Config->{prefs_dir};
     open(PREFS, ">", File::Spec->catfile($CPAN::Config->{prefs_dir},
-        "catalyst_local-lib-disable-mech-live.yml")) or die; 
+        "catalyst_local-lib-disable-mech-live.yml")) or die;
     print PREFS qq{---
 comment: "WWW-Mechanize regularly fails its live tests, turn them off."
 match:
