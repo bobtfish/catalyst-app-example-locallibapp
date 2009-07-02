@@ -10,14 +10,17 @@
 
 # FIXME - check that we have been run as script/bootstrap.sh here..
 
-# Remove pre-existing lib
-rm -rf local-lib5
-
 # Do not take no for an answer.
 export CATALYST_LOCAL_LIB=1
 
 PWD=`pwd`
 TARGET="$PWD/local-lib5"
+
+if [ -d $TARGET ]; then
+    echo "$TARGET already exists, refusing to re-bootstrap, please remove and re-run this script if you really mean to"
+    exit 1
+fi
+
 LIB="$TARGET/lib/perl5"
 export PERL_MM_OPT="INSTALL_BASE=$TARGET"
 export PERL_MM_USE_DEFAULT="1"
@@ -25,12 +28,30 @@ export PERL_MM_USE_DEFAULT="1"
 # Install local::lib, force so we do it even if we have it already
 perl -MCPAN -e'force(qw/install local::lib/)'
 
+if [ "$?" != "0" ]; then
+    echo "Failed initial install of local::lib" 1>&2
+    exit 1
+fi
+
 # Then force install it --self-contained to get dependencies
 export PERL5LIB=
 perl -I $LIB -Mlocal::lib=--self-contained,$TARGET -MCPAN -e'force(qw/install local::lib/)'
 
+if [ "$?" != "0" ]; then
+    echo "Failed --self-contained install of local::lib" 1>&2
+    exit 1
+fi
+
 script/cpan-install.pl Module::Install
+if [ "$?" != "0" ]; then
+    echo "Failed to install Module::Install in local::lib" 1>&2
+    exit 1
+fi
 script/cpan-install.pl CPAN
+if [ "$?" != "0" ]; then
+    echo "Failed to install CPAN in local::lib" 1>&2
+    exit 1
+fi
 # Needed if you have old old CPAN, fixed in more recent local::lib
 # (>=1.004003)
 
@@ -48,6 +69,6 @@ patches:
 };
     close(PREFS);'
 
-perl Makefile.PL
-make installdeps
+echo "local::lib setup, type perl Makefile.PL && make installdeps to install dependencies"
+exit 0
 
