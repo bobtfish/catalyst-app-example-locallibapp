@@ -52,8 +52,10 @@ if [ "$?" != "0" ]; then
     echo "Failed to install CPAN in local::lib" 1>&2
     exit 1
 fi
-# Needed if you have old old CPAN, fixed in more recent local::lib
-# (>=1.004003)
+
+# FIXME
+
+# This needs to work much better, currently fails if you don't have a prefs_dir defined..
 
 # Mangle WWW::Mechanize with distroprefs, I'm sick of it failing.
 perl -I $LIB -Mlocal::lib=--self-contained,$TARGET -MCPAN -MCPAN::HandleConfig -e'
