@@ -47,9 +47,16 @@ if [ "$?" != "0" ]; then
     echo "Failed to install Module::Install in local::lib" 1>&2
     exit 1
 fi
+
 script/cpan-install.pl CPAN
 if [ "$?" != "0" ]; then
     echo "Failed to install CPAN in local::lib" 1>&2
+    exit 1
+fi
+
+PERL_AUTOINSTALL_PREFER_CPAN=1 script/cpan-install.pl Module::Install::Catalyst
+if [ "$?" != "0" ]; then
+    echo "Failed to install Module::Install::Catalyst in local::lib" 1>&2
     exit 1
 fi
 
