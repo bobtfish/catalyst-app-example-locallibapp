@@ -1,10 +1,11 @@
 #!/usr/bin/env perl
 # IMPORTANT: if you delete this file your app will not work as
 # expected.  You have been warned.
-use inc::Module::Install;
 
 use FindBin;
 BEGIN { do "$FindBin::Bin/script/env" or die $@ }
+
+use inc::Module::Install;
 
 name 'LocalLibApp';
 all_from 'lib/LocalLibApp.pm';
