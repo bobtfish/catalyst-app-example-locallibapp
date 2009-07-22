@@ -54,3 +54,17 @@ local-lib5 directory.
 It is possible do totally disable local::lib on a temporary basis by setting
 the CATALYST_LOCAL_LIB environment variable to 0
 
+# AUTHORS
+
+  * Tomas Doran
+
+  * Robert Krimen
+
+  * John Napiorkowski
+
+# COPYRIGHT AND LICENSE
+
+Copyright 2009 Tomas Doran. Some Rights Reserved
+
+These scripts free software; you may redistribute it and/or modify them under the same terms as Perl itself
+
