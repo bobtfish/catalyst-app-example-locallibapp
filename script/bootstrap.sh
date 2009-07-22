@@ -48,6 +48,12 @@ if [ "$?" != "0" ]; then
     exit 1
 fi
 
+script/cpan-install.pl YAML
+if [ "$?" != "0" ]; then
+    echo "Failed to install Module::Install in YAML" 1>&2
+    exit 1
+fi
+
 script/cpan-install.pl CPAN
 if [ "$?" != "0" ]; then
     echo "Failed to install CPAN in local::lib" 1>&2
