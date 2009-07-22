@@ -14,6 +14,9 @@ use warnings;
 use lib;
 use FindBin;
 use CPAN;
+# XXX - FIXME, I'd like to support 5.8.6 if possible (osX 10.4 still here!)
+#              and apple ship that perl.. I'm not sure ::HandleConfig existed
+#              back then :/
 use CPAN::HandleConfig;
 
 # Do not take no for an answer.
