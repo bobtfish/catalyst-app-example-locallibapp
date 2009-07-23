@@ -14,10 +14,6 @@ use warnings;
 use lib;
 use FindBin;
 use CPAN;
-# XXX - FIXME, I'd like to support 5.8.6 if possible (osX 10.4 still here!)
-#              and apple ship that perl.. I'm not sure ::HandleConfig existed
-#              back then :/
-use CPAN::HandleConfig;
 
 # Do not take no for an answer.
 
@@ -68,13 +64,17 @@ install('CPAN');
 install('Module::Install::Catalyst');
 
 # setup distroprefs
-
-CPAN::HandleConfig->load();
-mkdir $CPAN::Config->{prefs_dir} unless -d $CPAN::Config->{prefs_dir};
-open(my $prefs, ">", File::Spec->catfile($CPAN::Config->{prefs_dir},
+{
+    # Ok, god only knows what version of CPAN we started with, so lets nuke the
+    # config and try to reload it here for safety
+    local %CPAN::Config;
+    require CPAN::HandleConfig; # not installed till we installed CPAN (5.8.x)
+    CPAN::HandleConfig->load();
+    mkdir $CPAN::Config->{prefs_dir} unless -d $CPAN::Config->{prefs_dir};
+    open(my $prefs, ">", File::Spec->catfile($CPAN::Config->{prefs_dir},
         "catalyst_local-lib-disable-mech-live.yml")) or die "Can't open prefs_dir: $!";
 
-print $prefs qq{---
+    print $prefs qq{---
 comment: "WWW-Mechanize regularly fails its live tests, turn them off."
 match:
   distribution: "^PETDANCE/WWW-Mechanize-1.\\d+\\.tar\\.gz"
@@ -82,7 +82,8 @@ patches:
   - "BOBTFISH/WWW-Mechanize-1.XX-BOBTFISH-01_notests.patch.gz"
 };
 
-close($prefs);
+    close($prefs);
+}
 
 print "local::lib setup, type perl Makefile.PL && make installdeps to install dependencies";
 
