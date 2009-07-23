@@ -14,10 +14,6 @@ use warnings;
 use lib;
 use FindBin;
 use CPAN;
-# XXX - FIXME, I'd like to support 5.8.6 if possible (osX 10.4 still here!)
-#              and apple ship that perl.. I'm not sure ::HandleConfig existed
-#              back then :/
-use CPAN::HandleConfig;
 
 # Do not take no for an answer.
 
@@ -56,6 +52,11 @@ lib->import("$target/lib/perl5");
 $ENV{PERL_AUTOINSTALL_PREFER_CPAN}=1;
 $ENV{PERL_MM_OPT} .= " INSTALLMAN1DIR=none INSTALLMAN3DIR=none";
 
+# Need to force File::HomeDir on the Mac
+if ($^O eq "darwin") {
+	force(qw/install Mac::Carbon/);
+}
+
 require local::lib;
 local::lib->import( '--self-contained', $target );
 force(qw/install local::lib/);
@@ -69,6 +70,7 @@ install('Module::Install::Catalyst');
 
 # setup distroprefs
 
+use CPAN::HandleConfig;
 CPAN::HandleConfig->load();
 mkdir $CPAN::Config->{prefs_dir} unless -d $CPAN::Config->{prefs_dir};
 open(my $prefs, ">", File::Spec->catfile($CPAN::Config->{prefs_dir},
