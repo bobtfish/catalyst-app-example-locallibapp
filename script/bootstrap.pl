@@ -33,36 +33,40 @@ $basedir ||= '';
 my $target = "$basedir/local-lib5";
 my $lib = "$target/lib/perl5";
 
-
+# Start installing stuff in the target dir
 $ENV{PERL_MM_OPT} = "INSTALL_BASE=$target";
 $ENV{PERL_MM_USE_DEFAULT} = "1";
+# And allow dependency checks to find it
+lib->import("$target/lib/perl5");
 
 # First just force install local::lib to get it local to $target
-
+force(qw/install LWP::UserAgent/); # Need LWP for CPAN to work on Mac, as curl and
+                           # wget puke on the spaces in
+                           # ~/Library/Applicaton Support
+                           # Note - this needs to happen before File::HomeDir
+# Need to force File::HomeDir on the Mac
+if ($^O eq "darwin") {
+    force(qw/install Mac::Carbon/);
+}
 force(qw/install local::lib/);
 
-# Then force install it --self-contained to get dependencies
+require local::lib; # Turn local::lib on
+local::lib->import( $target );
 
-$ENV{PERL5LIB} = "";
-
-# So we can find local::lib when fully self contained
-lib->import("$target/lib/perl5");
+# Become fully self contained
+$ENV{PERL5LIB} = ""; # If we used a local::lib to bootstrap, this kills it.
 
 # Sorry kane ;)
 $ENV{PERL_AUTOINSTALL_PREFER_CPAN}=1;
 $ENV{PERL_MM_OPT} .= " INSTALLMAN1DIR=none INSTALLMAN3DIR=none";
 
-# Need to force File::HomeDir on the Mac
-if ($^O eq "darwin") {
-	force(qw/install Mac::Carbon/);
-}
-
-require local::lib;
 local::lib->import( '--self-contained', $target );
+
+# Force a re-install of local::lib here to get the dependencies for local::lib
+# It requires things which ensure we have an unfucked toolchain :)
 force(qw/install local::lib/);
 
 # Install the base modules
-
 install('Module::Install');
 install('YAML');
 install('CPAN');
