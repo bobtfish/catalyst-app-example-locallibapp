@@ -52,6 +52,11 @@ lib->import("$target/lib/perl5");
 $ENV{PERL_AUTOINSTALL_PREFER_CPAN}=1;
 $ENV{PERL_MM_OPT} .= " INSTALLMAN1DIR=none INSTALLMAN3DIR=none";
 
+# Need to force File::HomeDir on the Mac
+if ($^O eq "darwin") {
+	force(qw/install Mac::Carbon/);
+}
+
 require local::lib;
 local::lib->import( '--self-contained', $target );
 force(qw/install local::lib/);
