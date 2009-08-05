@@ -39,6 +39,15 @@ $ENV{PERL_MM_USE_DEFAULT} = "1";
 # And allow dependency checks to find it
 lib->import("$target/lib/perl5");
 
+# Deal with the weird case that cpan has never been run before and
+# cpan wants to create a .cpan directory in /root or somewhere you
+# can't access
+
+local %CPAN::Config;
+require CPAN::HandleConfig;w
+CPAN::HandleConfig->load();
+$CPAN::Config->{prefs_dir} = "~/.cpan/prefs";
+
 # First just force install local::lib to get it local to $target
 force(qw/install LWP::UserAgent/); # Need LWP for CPAN to work on Mac, as curl and
                            # wget puke on the spaces in
