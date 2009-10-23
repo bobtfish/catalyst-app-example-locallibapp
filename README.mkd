@@ -8,7 +8,7 @@
     cd catalyst-app-example-locallibapp
     
     # To bootstrap local::lib, runs your Makefile.PL, runs make installdeps
-    ./script/bootstrap.sh
+    ./script/bootstrap.pl
     # And go!
     ./script/catalyst-server.pl
 
@@ -20,7 +20,7 @@ script/env to enable local::lib mode
 # Additional scripts available:
 
   * env - The core script, does all the magic.
-  * bootstrap.sh - create initial local-lib5 directory
+  * bootstrap.pl - create initial local-lib5 directory
 
   * shell.sh - a bash shell with this app's local::lib setup _NOT SELF CONTAINED_
   * perl.pl - run perl with this app's local::lib setup

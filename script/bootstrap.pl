@@ -44,7 +44,7 @@ lib->import("$target/lib/perl5");
 # can't access
 
 local %CPAN::Config;
-require CPAN::HandleConfig;w
+require CPAN::HandleConfig;
 CPAN::HandleConfig->load();
 $CPAN::Config->{prefs_dir} = "~/.cpan/prefs";
 
