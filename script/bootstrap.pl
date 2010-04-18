@@ -69,7 +69,8 @@ $ENV{PERL5LIB} = ""; # If we used a local::lib to bootstrap, this kills it.
 $ENV{PERL_AUTOINSTALL_PREFER_CPAN}=1;
 $ENV{PERL_MM_OPT} .= " INSTALLMAN1DIR=none INSTALLMAN3DIR=none";
 
-local::lib->import( '--self-contained', $target );
+require lib::core::only;
+local::lib->import( $target );
 
 # Force a re-install of local::lib here to get the dependencies for local::lib
 # It requires things which ensure we have an unfucked toolchain :)
